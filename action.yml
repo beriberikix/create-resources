@@ -30,6 +30,6 @@ runs:
     - if: ${{ inputs.deviceTag != '' }}
       run: echo "tag=--tags ["${{ inputs.deviceTag }}"]" >> $GITHUB_ENV
       shell: bash
-    - if: ${{ env.provision == "true" }}
+    - if: ${{ env.provision == 'true' }}
       run: goliothctl provision --name ${{ inputs.deviceName }} ${{ env.pskDetails }} ${{ env.tag }}
       shell: bash
