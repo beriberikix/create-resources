@@ -26,7 +26,10 @@ runs:
       shell: bash
     - if: ${{ inputs.psk != '' && inputs.pskId }}
       run: echo "pskDetails=--psk ${{ inputs.psk }} --pskId ${{ inputs.psk }}" >> $GITHUB_ENV
+      shell: bash
     - if: ${{ inputs.deviceTag != '' }}
       run: echo "tag=--tags ["${{ inputs.deviceTag }}"]" >> $GITHUB_ENV
+      shell: bash
     - if: ${{ env.provision == true }}
       run: goliothctl provision --name ${{ inputs.deviceName }} ${{ env.pskDetails }} ${{ env.tag }}
+      shell: bash
