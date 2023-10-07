@@ -1,0 +1,32 @@
+name: "Create Golioth Resources"
+description: "Create Golioth resources like devices."
+branding:
+  icon: "cpu"
+  color: "green"
+
+inputs:
+  deviceName:
+    description: "Device name."
+    required: false
+  psk:
+    description: "Pre-shared key. Used as part of device authentication."
+    required: false
+  pskId:
+    description: "Pre-shared key ID. Used as part of device authentication."
+    required: false
+  deviceTag:
+    description: "Tag used to target a release."
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - if: ${{ inputs.deviceName != '' }}
+      run: echo "provision=true" >> $GITHUB_ENV
+      shell: bash
+    - if: ${{ inputs.psk != '' && inputs.pskId }}
+      run: echo "pskDetails=--psk ${{ inputs.psk }} --pskId ${{ inputs.psk }}" >> $GITHUB_ENV
+    - if: ${{ inputs.deviceTag != '' }}
+      run: echo "tag=--tags ["${{ inputs.deviceTag }}"]" >> $GITHUB_ENV
+    - if: ${{ env.provision == true }}
+      run: goliothctl provision --name ${{ inputs.deviceName }} ${{ env.pskDetails }} ${{ env.tag }}
